@@ -1,6 +1,6 @@
 # Trading Card Inspector 한국어 패치
 
-**Trading Card Inspector** 의 비공식 한국어 번역 패치입니다. BepInEx 플러그인 방식으로 동작하며, 게임 파일을 직접 수정하지 않습니다.
+**[Trading Card Inspector](https://store.steampowered.com/app/3723750/Trading_Card_Inspector/)** 의 비공식 한국어 번역 패치입니다. BepInEx 플러그인 방식으로 동작하며, 게임 파일을 직접 수정하지 않습니다.
 
 ---
 
