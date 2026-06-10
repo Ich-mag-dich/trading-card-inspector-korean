@@ -11,6 +11,24 @@
 
 ---
 
+## 구조
+
+```text
+TCI_Korean_Patch_v1.0.0.zip
+├── winhttp.dll              ← BepInEx 로더
+├── doorstop_config.ini      ← BepInEx 설정
+└── BepInEx/
+    ├── core/                ← BepInEx 코어
+    ├── patchers/
+    └── plugins/
+        └── TCIKorean/
+            ├── TCIKorean.dll
+            ├── strings_ko.json ← 번역 문자열 데이터(필요시 수정 가능)
+            └── koreanfont   ← Noto Sans KR 폰트를 TMP Font Asset으로 변환 후 AssetBundle로 패킹한 파일
+```
+
+---
+
 ## 설치 방법
 
 1. [Releases](../../releases) 에서 `TCI_Korean_Patch_vX.X.X.zip` 다운로드
