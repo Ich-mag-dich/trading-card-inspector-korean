@@ -3,3 +3,6 @@ dist/
 .vs/
 bin/
 obj/
+node_modules/
+*.log
+.vscode/

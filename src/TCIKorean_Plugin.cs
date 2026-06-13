@@ -18,8 +18,58 @@ namespace TCIKorean
         static readonly string[] TableNames = { "MainTable", "MemoTable", "CardTable" };
         static readonly string PluginFolder = Path.Combine(Paths.PluginPath, "TCIKorean");
 
+        private bool isShowModal = false;
+        private Rect modalRect = new Rect(Screen.width / 2 - 150, Screen.height / 2 - 100, 300, 200);
+
         Dictionary<string, Dictionary<long, string>> _translations;
         TMP_FontAsset _koreanFont;
+
+        void Update()
+        {
+            // F5를 누르면 모달 창 상태 반전
+            if (UnityEngine.Input.GetKeyDown(KeyCode.F5))
+            {
+                isShowModal = !isShowModal;
+
+                // 마우스 커서 보이게 처리 (게임 설정에 따라 다름)
+                Cursor.visible = isShowModal;
+                Cursor.lockState = isShowModal ? CursorLockMode.None : CursorLockMode.Locked;
+            }
+        }
+
+        private void OnGUI()
+        {
+            // 모달 창이 켜져 있을 때만 OnGUI 실행
+            if (isShowModal)
+            {
+                // 중앙에 창 그리기
+                modalRect = GUI.Window(0, modalRect, DrawModalWindow, "주의! 모달 창");
+            }
+        }
+
+        private void DrawModalWindow(int windowID)
+        {
+            GUILayout.Label("이 창이 열려있는 동안 게임 입력을 차단합니다.");
+            GUILayout.Space(20);
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("확인"))
+            {
+                Debug.Log("확인 버튼 클릭");
+                isShowModal = false;
+                Cursor.visible = false;
+            }
+            if (GUILayout.Button("취소"))
+            {
+                Debug.Log("취소 버튼 클릭");
+                isShowModal = false;
+                Cursor.visible = false;
+            }
+            GUILayout.EndHorizontal();
+
+            // 창을 마우스로 드래그해서 움직일 수 있게 함
+            GUI.DragWindow(new Rect(0, 0, 10000, 20));
+        }
 
         void Awake()
         {
