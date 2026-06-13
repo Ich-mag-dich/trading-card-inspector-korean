@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using BepInEx;
 using Newtonsoft.Json.Linq;
@@ -9,7 +8,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
-using UnityEngine.TextCore.LowLevel;
 
 namespace TCIKorean
 {
@@ -41,10 +39,25 @@ namespace TCIKorean
         void ApplyFont()
         {
             if (_koreanFont == null) return;
+
+            // 글로벌 fallback에 추가 (동적으로 생성되는 UI 포함)
+            if (!TMP_Settings.fallbackFontAssets.Contains(_koreanFont))
+                TMP_Settings.fallbackFontAssets.Add(_koreanFont);
+
+            // 현재 씬의 모든 폰트 fallback에도 추가
+            var seen = new HashSet<TMP_FontAsset>();
             int count = 0;
             foreach (var t in GameObject.FindObjectsByType<TMP_Text>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-            { t.font = _koreanFont; t.ForceMeshUpdate(true); count++; }
-            Logger.LogInfo($"폰트 적용: {count}개");
+            {
+                if (t.font == null || seen.Contains(t.font)) continue;
+                seen.Add(t.font);
+                if (!t.font.fallbackFontAssetTable.Contains(_koreanFont))
+                {
+                    t.font.fallbackFontAssetTable.Add(_koreanFont);
+                    count++;
+                }
+            }
+            Logger.LogInfo($"폰트 fallback 적용: {count}개 폰트");
         }
 
         TMP_FontAsset LoadFontFromBundle(string bundlePath)
